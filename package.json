@@ -11,6 +11,7 @@
     "apollo-boost": "^0.4.3",
     "expo": "^34.0.1",
     "graphql": "^14.4.2",
+    "mem": "^5.1.1",
     "react": "16.8.3",
     "react-apollo-hooks": "^0.5.0",
     "react-dom": "^16.8.6",
