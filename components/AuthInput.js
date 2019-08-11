@@ -11,7 +11,7 @@ const TextInput = styled.TextInput`
   width: ${constants.width / 2};
   padding: 10px;
   background-color: ${props => props.theme.greyColor};
-  border: 1px solid ${props => props.theme.darkGreyColor};
+  border: 0.5px solid ${props => props.theme.darkGreyColor};
   border-radius: 4px;
 `;
 
@@ -20,7 +20,10 @@ const AuthInput = ({
   autoCapitalize = "none",
   placeholder,
   onChange,
-  value
+  value,
+  returnKeyType = "done",
+  onEndEditing = () => null,
+  autoCorrect = "true"
 }) => (
   <Container>
     <TextInput
@@ -29,6 +32,9 @@ const AuthInput = ({
       placeholder={placeholder}
       value={value}
       onChangeText={onChange}
+      returnKeyType={returnKeyType}
+      onEndEditing={onEndEditing}
+      autoCorrect={autoCorrect}
     />
   </Container>
 );
@@ -45,7 +51,10 @@ AuthInput.propTypes = {
     "email-address",
     "phone-pad"
   ]),
-  autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"])
+  autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
+  returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
+  onEndEditing: PropTypes.func,
+  autoCorrect: PropTypes.bool
 };
 
 export default AuthInput;
