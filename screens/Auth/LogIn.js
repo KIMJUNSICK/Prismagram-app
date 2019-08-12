@@ -14,7 +14,7 @@ const View = styled.View`
 `;
 
 export default ({ navigation }) => {
-  const emailInput = useInput("");
+  const emailInput = useInput("jinaganda5@gmail.com");
   const [loading, setLoading] = useState(false);
   const [requestSecretMutaion] = useMutation(LOG_IN, {
     variables: { email: emailInput.value }
@@ -36,10 +36,10 @@ export default ({ navigation }) => {
       } = await requestSecretMutaion();
       if (requestSecret) {
         Alert.alert("Check your Email");
-        navigation.navigate("Confirm");
+        navigation.navigate("Confirm", { email: value });
       } else {
         Alert.alert("Account not found");
-        navigation.navigate("SignUp");
+        navigation.navigate("SignUp", { email: value });
       }
     } catch (e) {
       console.log(e);
