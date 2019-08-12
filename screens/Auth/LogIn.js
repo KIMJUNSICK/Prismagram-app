@@ -14,7 +14,7 @@ const View = styled.View`
 `;
 
 export default ({ navigation }) => {
-  const emailInput = useInput("jinaganda5@gmail.com");
+  const emailInput = useInput(navigation.getParam("email", ""));
   const [loading, setLoading] = useState(false);
   const [requestSecretMutaion] = useMutation(LOG_IN, {
     variables: { email: emailInput.value }

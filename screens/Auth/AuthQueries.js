@@ -11,3 +11,19 @@ export const CONFIRM_SECRET = gql`
     confirmSecret(email: $email, secret: $secret)
   }
 `;
+
+export const CREATE_ACCOUNT = gql`
+  mutation createAccount(
+    $userName: String!
+    $email: String!
+    $firstName: String
+    $lastName: String
+  ) {
+    createAccount(
+      userName: $userName
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+    )
+  }
+`;
