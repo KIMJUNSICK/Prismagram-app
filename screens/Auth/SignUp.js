@@ -71,18 +71,25 @@ export default ({ navigation }) => {
     }
   };
   const fbLogin = async () => {
+    setLoading(true);
     try {
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
         "357377391624981",
         {
-          permissions: ["public_profile"]
+          permissions: ["public_profile", "email"]
         }
       );
       if (type === "success") {
         const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,email,last_name,first_name`
         );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        const { email, first_name, last_name } = await response.json();
+        emailInput.setValue(email);
+        firstNameInput.setValue(first_name);
+        lastNameInput.setValue(last_name);
+        const [userName] = email.split("@");
+        userNameInput.setValue(userName);
+        setLoading(false);
       } else {
         Alert.alert("Fail Connect");
       }
