@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Loader from "../../components/Loader";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
+import Post from "../../components/Post";
 
 const View = styled.View`
   justify-content: center;
@@ -17,8 +18,6 @@ const FEED_QUERY = gql`
   {
     seeFeed {
       id
-      location
-      caption
       user {
         id
         avatar
@@ -38,6 +37,8 @@ const FEED_QUERY = gql`
           userName
         }
       }
+      location
+      caption
       createdAt
     }
   }
@@ -46,7 +47,6 @@ const FEED_QUERY = gql`
 export default () => {
   const [refresing, setRefreshing] = useState(false);
   const { loading, data, refetch } = useQuery(FEED_QUERY);
-  console.log(loading, data);
   const refresh = async () => {
     try {
       setRefreshing(true);
@@ -63,7 +63,13 @@ export default () => {
         <RefreshControl refreshing={refresing} onRefresh={refresh} />
       }
     >
-      {loading ? <Loader /> : <Text>junsik</Text>}
+      {loading ? (
+        <Loader />
+      ) : (
+        data &&
+        data.seeFeed &&
+        data.seeFeed.map(post => <Post key={post.id} {...post} />)
+      )}
     </ScrollView>
   );
 };
