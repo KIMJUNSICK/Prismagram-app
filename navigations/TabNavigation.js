@@ -4,13 +4,14 @@ import {
   createBottomTabNavigator,
   createStackNavigator
 } from "react-navigation";
+import { Platform } from "@unimodules/core";
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
-import { Platform } from "@unimodules/core";
+import { stackStyles } from "./config";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -19,7 +20,7 @@ const stackFactory = (initialRoute, customConfig) =>
         screen: initialRoute,
         navigationOptions: {
           ...customConfig,
-          headerStyle: { backgroundColor: "#fcfdff" }
+          headerStyle: { ...stackStyles }
         }
       }
     },
@@ -107,9 +108,7 @@ export default createBottomTabNavigator(
   {
     tabBarOptions: {
       showLabel: false,
-      tabStyle: {
-        backgroundColor: "#fcfdff"
-      }
+      style: { ...stackStyles }
     }
   }
 );
