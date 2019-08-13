@@ -16,6 +16,7 @@
     "expo-asset": "^6.0.0",
     "expo-facebook": "~6.0.0",
     "expo-font": "^6.0.1",
+    "expo-google-app-auth": "^6.0.0",
     "graphql": "^14.4.2",
     "mem": "^5.1.1",
     "prop-types": "^15.7.2",

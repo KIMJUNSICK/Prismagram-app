@@ -3,6 +3,7 @@ import { useMutation } from "react-apollo-hooks";
 import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import styled from "styled-components";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
@@ -20,6 +21,10 @@ const FBcontainer = styled.View`
   border-top-width: 1px;
   border-color: ${props => props.theme.lightGreyColor};
   border-style: solid;
+`;
+
+const GoogleContainer = styled.View`
+  margin-top: -5px;
 `;
 
 export default ({ navigation }) => {
@@ -70,6 +75,15 @@ export default ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const updateFormData = (email, firstName, lastName) => {
+    emailInput.setValue(email);
+    firstNameInput.setValue(firstName);
+    lastNameInput.setValue(lastName);
+    const [userName] = email.split("@");
+    userNameInput.setValue(userName);
+  };
+
   const fbLogin = async () => {
     setLoading(true);
     try {
@@ -84,17 +98,42 @@ export default ({ navigation }) => {
           `https://graph.facebook.com/me?access_token=${token}&fields=id,email,last_name,first_name`
         );
         const { email, first_name, last_name } = await response.json();
-        emailInput.setValue(email);
-        firstNameInput.setValue(first_name);
-        lastNameInput.setValue(last_name);
-        const [userName] = email.split("@");
-        userNameInput.setValue(userName);
-        setLoading(false);
+        updateFormData(email, first_name, last_name);
       } else {
         Alert.alert("Fail Connect");
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const GoogleLogin = async () => {
+    const GOOGLE_ANDRIOD =
+      "820501501341-vaem86ssabm2ktaqltq9ukrsjljichko.apps.googleusercontent.com";
+    const GOOGLE_iOS =
+      "820501501341-htr40ouo7dhgd3sq651ciuc4uautvc1e.apps.googleusercontent.com";
+    try {
+      setLoading(true);
+      const result = await Google.logInAsync({
+        androidClientId: GOOGLE_ANDRIOD,
+        iosClientId: GOOGLE_iOS,
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.accessToken}` }
+        });
+        const { email, family_name, given_name } = await user.json();
+        updateFormData(email, given_name, family_name);
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -132,6 +171,14 @@ export default ({ navigation }) => {
             blueColor={"#2D4DA7"}
           />
         </FBcontainer>
+        <GoogleContainer>
+          <AuthButton
+            loading={false}
+            onPress={GoogleLogin}
+            text={"Google+"}
+            blueColor={"#df4a32"}
+          />
+        </GoogleContainer>
       </View>
     </TouchableWithoutFeedback>
   );
