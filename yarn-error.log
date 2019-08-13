@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-google-auth
+  C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @expo/vector-icons
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\user\bin;C:\Program Files (x86)\NAT Service;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\4.0\bin;C:\Users\user\AppData\Local\Android\Sdk\platform-tools;C:\Users\user\AppData\Local\Microsoft\WindowsApps;C:\Users\user\AppData\Local\GitHubDesktop\bin;C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\user\AppData\Roaming\npm
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-google-auth: Not found
-      at Request.params.callback [as _callback] (C:\Users\user\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66830:18)
-      at Request.self.callback (C:\Users\user\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140464:22)
-      at Request.emit (events.js:198:13)
-      at Request.<anonymous> (C:\Users\user\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141436:10)
-      at Request.emit (events.js:198:13)
-      at IncomingMessage.<anonymous> (C:\Users\user\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141358:12)
-      at Object.onceWrapper (events.js:286:20)
-      at IncomingMessage.emit (events.js:203:15)
-      at endReadableNT (_stream_readable.js:1129:12)
-      at process._tickCallback (internal/process/next_tick.js:63:19)
+  Error: EPERM: operation not permitted, unlink 'C:\Users\user\Desktop\Documents\project\prismagram-app\node_modules\@babel\generator\node_modules\.bin'
 
 npm manifest: 
   {
@@ -45,6 +35,7 @@ npm manifest:
       "expo-asset": "^6.0.0",
       "expo-facebook": "~6.0.0",
       "expo-font": "^6.0.1",
+      "expo-google-app-auth": "^6.0.0",
       "graphql": "^14.4.2",
       "mem": "^5.1.1",
       "prop-types": "^15.7.2",
@@ -2208,6 +2199,13 @@ Lockfile:
     dependencies:
       fill-range "^2.1.0"
   
+  expo-app-auth@~6.0.0:
+    version "6.0.0"
+    resolved "https://registry.yarnpkg.com/expo-app-auth/-/expo-app-auth-6.0.0.tgz#4b2535da16a0234f67e813708960fc146aec867e"
+    integrity sha512-/7dv/RXYfg4OGmm5xOJUTecezTqccxmaUuYx1jt+hoI/QqD+q5uvT2u5Phi8uU4WsE5bi8qlkSRNTpL+rGSVoQ==
+    dependencies:
+      invariant "^2.2.4"
+  
   expo-app-loader-provider@~6.0.0:
     version "6.0.0"
     resolved "https://registry.yarnpkg.com/expo-app-loader-provider/-/expo-app-loader-provider-6.0.0.tgz#c187a39942ac27cfaec3b394a5c9851d3f39678b"
@@ -2247,6 +2245,14 @@ Lockfile:
     integrity sha512-zQwGFTKSrsTWmFzS0l87i6TyqM0YFDK4ui4sSzpbdQsUHXpeG7wfa67i09roLS0xtp85nrR9Vm2bUJp9njV8JQ==
     dependencies:
       fontfaceobserver "^2.1.0"
+  
+  expo-google-app-auth@^6.0.0:
+    version "6.0.0"
+    resolved "https://registry.yarnpkg.com/expo-google-app-auth/-/expo-google-app-auth-6.0.0.tgz#1d9e4603271fa89d36ebaf604adb0169739f4235"
+    integrity sha512-23gkverd0OKGuCSjCxR/Uo08GvlMpTBR5yipbfwGosqvEk3WuCAhISGWIEg0Ozd0WA8DfZ9AyQhLYyWkbM4EIQ==
+    dependencies:
+      expo-app-auth "~6.0.0"
+      expo-constants "~6.0.0"
   
   expo-keep-awake@~6.0.0:
     version "6.0.0"
