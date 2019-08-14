@@ -7,7 +7,7 @@ import constants from "../constants";
 const SearchBar = ({ value, onChange, onSubmit }) => (
   <TextInput
     style={{
-      width: constants.width - 40,
+      width: constants.width / 1.5,
       height: 35,
       backgroundColor: styles.lightGreyColor,
       padding: 10,
