@@ -20,13 +20,24 @@ const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
 
+const Caption = styled.Text``;
+
 const Location = styled.Text`
   font-size: 12px;
 `;
 
+const CommentCount = styled.Text`
+  opacity: 0.5;
+  font-size: 13px;
+`;
+
+const InfoContainer = styled.View`
+  padding: 10px;
+`;
+
 const IconsContainer = styled.View`
   flex-direction: row;
-  margin-top: 10px;
+  margin: 5px 0px;
 `;
 
 const IconContainer = styled.View`
@@ -39,7 +50,14 @@ const Bold = styled.Text`
 
 const Touchable = styled.TouchableOpacity``;
 
-const Post = ({ location, user, files = [] }) => {
+const Post = ({
+  location,
+  user,
+  files = [],
+  comments = [],
+  likeCount,
+  caption
+}) => {
   return (
     <Container>
       <Header>
@@ -70,29 +88,40 @@ const Post = ({ location, user, files = [] }) => {
           />
         ))}
       </Swiper>
-      <IconsContainer>
+      <InfoContainer>
+        <IconsContainer>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                size={28}
+                name={
+                  Platform.OS === "ios" ? "ios-heart-emtpy " : "md-heart-empty"
+                }
+              />
+            </IconContainer>
+          </Touchable>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                size={28}
+                name={Platform.OS === "ios" ? "ios-text " : "md-text"}
+              />
+            </IconContainer>
+          </Touchable>
+          <IconContainer />
+        </IconsContainer>
         <Touchable>
-          <IconContainer>
-            <Ionicons
-              size={28}
-              name={
-                Platform.OS === "ios" ? "ios-heart-emtpy " : "md-heart-empty"
-              }
-            />
-          </IconContainer>
+          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
         </Touchable>
         <Touchable>
-          <IconContainer>
-            <Ionicons
-              size={28}
-              name={
-                Platform.OS === "ios" ? "ios-heart-emtpy " : "md-heart-empty"
-              }
-            />
-          </IconContainer>
+          <Caption>
+            <Bold>{user.userName}</Bold> {caption}
+          </Caption>
         </Touchable>
-        <IconContainer />
-      </IconsContainer>
+        <Touchable>
+          <CommentCount>See All {comments.length} comments</CommentCount>
+        </Touchable>
+      </InfoContainer>
     </Container>
   );
 };
