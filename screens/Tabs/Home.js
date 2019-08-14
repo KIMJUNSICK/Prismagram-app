@@ -5,43 +5,15 @@ import Loader from "../../components/Loader";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Post from "../../components/Post";
-
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
+import { POST_FRAGMENT } from "../../fragments";
 
 const FEED_QUERY = gql`
   {
     seeFeed {
-      id
-      user {
-        id
-        avatar
-        userName
-      }
-      files {
-        id
-        url
-      }
-      likeCount
-      isLiked
-      comments {
-        id
-        text
-        user {
-          id
-          userName
-        }
-      }
-      location
-      caption
-      createdAt
+      ...PostParts
     }
   }
+  ${POST_FRAGMENT}
 `;
 
 export default () => {
