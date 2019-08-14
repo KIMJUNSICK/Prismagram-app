@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Platform } from "react-native";
 import Swiper from "react-native-swiper";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Ionicons } from "@expo/vector-icons";
+import { gql } from "apollo-boost";
 import constants from "../constants";
+import { useMutation } from "react-apollo-hooks";
+import styles from "../styles";
 
 const Container = styled.View`
   margin-bottom: 20px;
@@ -20,7 +23,9 @@ const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
 
-const Caption = styled.Text``;
+const Caption = styled.Text`
+  margin: 5px 0px;
+`;
 
 const Location = styled.Text`
   font-size: 12px;
@@ -50,14 +55,38 @@ const Bold = styled.Text`
 
 const Touchable = styled.TouchableOpacity``;
 
+const TOGGLE_LIKE = gql`
+  mutation toggleLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
+
 const Post = ({
-  location,
+  id,
   user,
+  location,
+  caption,
   files = [],
   comments = [],
-  likeCount,
-  caption
+  likeCount: likeCountProp,
+  isLiked: isLikedProp
 }) => {
+  const [isLiked, setIsLiked] = useState(isLikedProp);
+  const [likeCount, setLikeCount] = useState(likeCountProp);
+  const [toggleLikeMutaion] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+  const handleLike = async () => {
+    if (isLiked === true) {
+      setLikeCount(number => number - 1);
+    } else {
+      setLikeCount(number => number + 1);
+    }
+    setIsLiked(p => !p);
+    try {
+      toggleLikeMutaion();
+    } catch (e) {}
+  };
   return (
     <Container>
       <Header>
@@ -90,12 +119,19 @@ const Post = ({
       </Swiper>
       <InfoContainer>
         <IconsContainer>
-          <Touchable>
+          <Touchable onPress={handleLike}>
             <IconContainer>
               <Ionicons
+                color={isLiked ? styles.redColor : styles.blackColor}
                 size={28}
                 name={
-                  Platform.OS === "ios" ? "ios-heart-emtpy " : "md-heart-empty"
+                  Platform.OS === "ios"
+                    ? isLiked
+                      ? "ios-heart"
+                      : "ios-heart-emtpy "
+                    : isLiked
+                    ? "md-heart"
+                    : "md-heart-empty"
                 }
               />
             </IconContainer>
@@ -103,7 +139,8 @@ const Post = ({
           <Touchable>
             <IconContainer>
               <Ionicons
-                size={28}
+                color={styles.blackColor}
+                size={24}
                 name={Platform.OS === "ios" ? "ios-text " : "md-text"}
               />
             </IconContainer>
