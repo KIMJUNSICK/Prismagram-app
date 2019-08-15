@@ -19,7 +19,6 @@ const UserDetail = ({ navigation }) => {
   const { loading, data } = useQuery(GET_USER, {
     variables: { userName: navigation.getParam("userName") }
   });
-  console.log(data, loading);
   return (
     <ScrollView>
       {loading ? (
