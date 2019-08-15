@@ -9,7 +9,6 @@ import UserProfie from "../../components/UserProfile";
 
 export default ({ navigation }) => {
   const { loading, data } = useQuery(ME);
-  console.log(loading, data);
   return (
     <ScrollView>
       {loading ? <Loader /> : data && data.me && <UserProfie {...data.me} />}
