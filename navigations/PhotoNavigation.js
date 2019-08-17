@@ -6,16 +6,34 @@ import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import { stackStyles } from "./config";
+import styles from "../styles";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    SelectPhoto,
-    TakePhoto
+    Select: {
+      screen: SelectPhoto,
+      navigationOptions: {
+        tabBarLabel: "Select"
+      }
+    },
+    TakePhoto: {
+      screen: TakePhoto,
+      navigationOptions: {
+        tabBarLabel: "Take"
+      }
+    }
   },
   {
     tabBarPosition: "bottom",
-    defaultNavigationOptions: {
-      headerStyle: {
+    tabBarOptions: {
+      indicatorStyle: {
+        backgroundColor: styles.blackColor
+      },
+      labelStyle: {
+        color: styles.blackColor,
+        fontWeight: "600"
+      },
+      style: {
         ...stackStyles
       }
     }
@@ -23,6 +41,11 @@ const PhotoTabs = createMaterialTopTabNavigator(
 );
 
 export default createStackNavigator({
-  PhotoTabs,
+  Tabs: {
+    screen: PhotoTabs,
+    navigationOptions: {
+      header: null
+    }
+  },
   UploadPhoto
 });
