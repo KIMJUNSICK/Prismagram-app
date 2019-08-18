@@ -40,12 +40,17 @@ const PhotoTabs = createMaterialTopTabNavigator(
   }
 );
 
-export default createStackNavigator({
-  Tabs: {
-    screen: PhotoTabs,
-    navigationOptions: {
-      header: null
-    }
+export default createStackNavigator(
+  {
+    Tabs: {
+      screen: PhotoTabs,
+      navigationOptions: {
+        title: "Choose Photo"
+      }
+    },
+    UploadPhoto
   },
-  UploadPhoto
-});
+  {
+    headerLayoutPreset: "center"
+  }
+);

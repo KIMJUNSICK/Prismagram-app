@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Image } from "react-native";
+import { Image, ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
 import Loader from "../../components/Loader";
+import constants from "../../constants";
 
 const View = styled.View`
-  justify-content: center;
-  align-items: center;
   flex: 1;
 `;
-
-const Text = styled.Text``;
 
 export default () => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +27,11 @@ export default () => {
       setLoading(false);
     }
   };
+
+  const handleSelect = photo => {
+    setSelected(photo);
+  };
+
   const askPermission = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -53,10 +55,37 @@ export default () => {
       ) : (
         <View>
           {hasPermission ? (
-            <Image
-              style={{ width: 100, height: 100 }}
-              source={{ uri: selected.uri }}
-            />
+            <>
+              <Image
+                style={{
+                  width: constants.width,
+                  height: constants.height / 2
+                }}
+                source={{ uri: selected.uri }}
+              />
+              <ScrollView
+                contentContainerStyle={{
+                  flexWrap: "wrap",
+                  flexDirection: "row"
+                }}
+              >
+                {allPhotos.map(photo => (
+                  <TouchableOpacity
+                    key={photo.id}
+                    onPress={() => handleSelect(photo)}
+                  >
+                    <Image
+                      source={{ uri: photo.uri }}
+                      style={{
+                        width: constants.width / 3,
+                        height: constants.height / 6,
+                        opacity: photo.id === selected.id ? 0.5 : 1
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
           ) : null}
         </View>
       )}
