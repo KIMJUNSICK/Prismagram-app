@@ -10,16 +10,16 @@ import styles from "../styles";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    Select: {
-      screen: SelectPhoto,
-      navigationOptions: {
-        tabBarLabel: "Select"
-      }
-    },
     TakePhoto: {
       screen: TakePhoto,
       navigationOptions: {
         tabBarLabel: "Take"
+      }
+    },
+    Select: {
+      screen: SelectPhoto,
+      navigationOptions: {
+        tabBarLabel: "Select"
       }
     }
   },

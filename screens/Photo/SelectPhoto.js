@@ -59,7 +59,7 @@ export default () => {
               <Image
                 style={{
                   width: constants.width,
-                  height: constants.height / 2
+                  height: constants.height / 2.3
                 }}
                 source={{ uri: selected.uri }}
               />
