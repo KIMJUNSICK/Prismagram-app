@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { TouchableOpacity, Platform } from "react-native";
 import { Camera } from "expo-camera";
 import * as Permissions from "expo-permissions";
+import * as MediaLibrary from "expo-media-library";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles";
 import Loader from "../../components/Loader";
@@ -10,22 +11,41 @@ import constants from "../../constants";
 
 const View = styled.View`
   flex: 1;
-`;
-
-const Text = styled.Text``;
-
-const IconContainer = styled.View``;
-
-const ButtonContainer = styled.View`
-  flex: 1;
   justify-content: center;
   align-items: center;
 `;
 
+const Button = styled.View`
+  width: 80;
+  height: 80;
+  border-radius: 40px;
+  border: 10px solid ${styles.lightGreyColor};
+`;
+
+const IconContainer = styled.View``;
+
 export default ({ navigation }) => {
+  const cameraRef = useRef();
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [canTake, setCanTake] = useState(true);
+  const takePhoto = async () => {
+    if (!canTake) {
+      return;
+    }
+    try {
+      setCanTake(false);
+      const { uri } = await cameraRef.current.takePictureAsync({
+        quality: 1
+      });
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      console.log(asset);
+    } catch (error) {
+      console.log(error);
+      setCanTake(true);
+    }
+  };
   const askPermission = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -56,8 +76,9 @@ export default ({ navigation }) => {
       {loading ? (
         <Loader />
       ) : hasPermission ? (
-        <View>
+        <>
           <Camera
+            ref={cameraRef}
             type={cameraType}
             style={{
               width: constants.width,
@@ -81,7 +102,12 @@ export default ({ navigation }) => {
               </IconContainer>
             </TouchableOpacity>
           </Camera>
-        </View>
+          <View>
+            <TouchableOpacity onPress={takePhoto} disabled={!canTake}>
+              <Button />
+            </TouchableOpacity>
+          </View>
+        </>
       ) : null}
     </View>
   );
