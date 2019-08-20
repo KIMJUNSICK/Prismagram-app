@@ -5,19 +5,41 @@ import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
+import styles from "../../styles";
 
 const View = styled.View`
   flex: 1;
 `;
 
-export default () => {
+const Button = styled.TouchableOpacity`
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  background-color: ${styles.blueColor};
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+`;
+
+const Text = styled.Text`
+  color: white;
+  font-weight: 600;
+`;
+
+export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState([]);
   const [allPhotos, setAllPhotos] = useState();
   const getPhotos = async () => {
     try {
-      const { assets } = await MediaLibrary.getAssetsAsync();
+      const p = await MediaLibrary.getAssetsAsync();
+      console.log(p);
+      const { assets } = await MediaLibrary.getAssetsAsync({
+        sortBy: MediaLibrary.SortBy.creationTime
+      });
       const [firstPhoto] = assets;
       setSelected(firstPhoto);
       setAllPhotos(assets);
@@ -28,8 +50,13 @@ export default () => {
     }
   };
 
-  const handleSelect = photo => {
+  const changeSelected = photo => {
     setSelected(photo);
+    console.log(selected);
+  };
+
+  const handleSelected = photo => {
+    navigation.navigate("Upload", { photo: selected });
   };
 
   const askPermission = async () => {
@@ -44,6 +71,7 @@ export default () => {
       hasPermission(false);
     }
   };
+
   useEffect(() => {
     askPermission();
   }, []);
@@ -63,6 +91,11 @@ export default () => {
                 }}
                 source={{ uri: selected.uri }}
               />
+
+              <Button onPress={handleSelected}>
+                <Text>Select Photo</Text>
+              </Button>
+
               <ScrollView
                 contentContainerStyle={{
                   flexWrap: "wrap",
@@ -72,7 +105,7 @@ export default () => {
                 {allPhotos.map(photo => (
                   <TouchableOpacity
                     key={photo.id}
-                    onPress={() => handleSelect(photo)}
+                    onPress={() => changeSelected(photo)}
                   >
                     <Image
                       source={{ uri: photo.uri }}

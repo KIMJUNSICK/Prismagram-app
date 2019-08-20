@@ -40,7 +40,8 @@ export default ({ navigation }) => {
         quality: 1
       });
       const asset = await MediaLibrary.createAssetAsync(uri);
-      console.log(asset);
+      setCanTake(true);
+      navigation.navigate("Upload", { photo: asset });
     } catch (error) {
       console.log(error);
       setCanTake(true);
