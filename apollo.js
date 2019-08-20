@@ -1,5 +1,5 @@
 const options = {
-  uri: "http://ccfad612.ngrok.io"
+  uri: "https://sapiensgram-backend.herokuapp.com/"
 };
 
 export default options;

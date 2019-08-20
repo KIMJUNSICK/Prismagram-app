@@ -13,6 +13,7 @@ const View = styled.View`
 
 const Image = styled.Image`
   width: ${constants.width / 2.5};
+  margin-bottom: 10px;
 `;
 
 const LoginLink = styled.View``;

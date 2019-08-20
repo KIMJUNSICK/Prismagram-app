@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Image, ActivityIndicator, Alert } from "react-native";
 import styled from "styled-components";
+import axios from "axios";
 import useInput from "../../hooks/useInput";
 import styles from "../../styles";
 import constants from "../../constants";
-import AuthButton from "../../components/AuthButton";
+import ngrok from "../../apollo";
 
 const View = styled.View`
   flex: 1;
@@ -41,20 +42,46 @@ const Text = styled.Text`
 `;
 
 export default ({ navigation }) => {
+  const photo = navigation.getParam("photo");
   const [loading, setLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const captionInput = useInput("");
   const locationInput = useInput("");
-  const handleUpload = () => {
+
+  const handleUpload = async () => {
     if (captionInput === "" || locationInput === "") {
       Alert.alert("All fields are required");
+    }
+    const formData = new FormData();
+    const name = photo.filename;
+    const [, type] = name.split(".");
+    formData.append("file", {
+      name,
+      type: type.toLowerCase(),
+      uri: photo.uri
+    });
+    try {
+      const {
+        data: { location }
+      } = await axios.post(
+        `${ngrok}/api/upload`,
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        },
+        setFileUrl(location)
+      );
+    } catch (e) {
+      Alert.alert("Cant upload", "Try later");
     }
   };
   return (
     <View>
       <Container>
         <Image
-          source={{ uri: navigation.getParam("photo").uri }}
+          source={{ uri: photo.uri }}
           style={{ height: 80, width: 80, marginRight: 30 }}
         />
         <Form>
