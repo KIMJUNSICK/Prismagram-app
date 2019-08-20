@@ -31,12 +31,10 @@ const Text = styled.Text`
 export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState();
   const [allPhotos, setAllPhotos] = useState();
   const getPhotos = async () => {
     try {
-      const p = await MediaLibrary.getAssetsAsync();
-      console.log(p);
       const { assets } = await MediaLibrary.getAssetsAsync({
         sortBy: MediaLibrary.SortBy.creationTime
       });
